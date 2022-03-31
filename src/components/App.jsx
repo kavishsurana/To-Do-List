@@ -5,13 +5,28 @@ import InputArea from "./InputArea";
 function App() {
   const [items, setItems] = useState([]);
 
+  React.useEffect(() => {
+    if(localStorage.getItem('items') !== null) {
+      setItems(JSON.parse(localStorage.getItem('items')));
+    }
+  }, [])
+  
+
   function addItem(inputText) {
+    const newItems = [...items, inputText];
+    localStorage.setItem('items', JSON.stringify(newItems));
     setItems(prevItems => {
       return [...prevItems, inputText];
+
     });
+   
   }
 
   function deleteItem(id) {
+    const newItems = items.filter((item, index) => {
+      return index !== id;
+    });
+    localStorage.setItem('items', JSON.stringify(newItems));
     setItems(prevItems => {
       return prevItems.filter((item, index) => {
         return index !== id;
